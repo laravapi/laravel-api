@@ -4,6 +4,7 @@ namespace LaravelApi\LaravelApi\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 
 class InstallApi extends Command
 {
@@ -30,7 +31,6 @@ class InstallApi extends Command
     {
         // Get information for API
         // Install composer package
-
 
         $apiInfo = $this->api($this->argument('api'));
 
@@ -59,15 +59,7 @@ config(['twitter.consumer_key' => env('TWITTER_CONSUMER_KEY')]);
 
     private function api($api)
     {
-        $apis = [
-            'twitter' => [
-                'package' => 'laravapi/twitter',
-                'definition' => 'Laravapi\Twitter\TwitterWrapper',
-
-            ],
-            'youtube' => [],
-        ];
-
-        return $apis[$api];
+        return Http::get('http://laravel-api.com/api/services/' . $api)
+            ->json();
     }
 }
