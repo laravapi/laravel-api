@@ -32,15 +32,15 @@
         "psr-4": {
             "LaravelApi\\LaravelApi\\": "src",
             "LaravelApi\\LaravelApi\\Database\\Factories\\": "database/factories"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "LaravelApi\\LaravelApi\\Tests\\": "tests"
         },
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelApi\\LaravelApi\\Tests\\": "tests"
+        }
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
