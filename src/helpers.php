@@ -3,6 +3,6 @@
 if (! function_exists('api')) {
     function api($api)
     {
-        return 5;
+        return new LaravelApi\LaravelApi\LaravelApi($api);
     }
 }

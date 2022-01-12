@@ -34,7 +34,7 @@ class InstallApi extends Command
 
         $apiInfo = $this->api($this->argument('api'));
 
-        // shell_exec('composer require ' . $apiInfo['package']);
+        shell_exec('composer require ' . $apiInfo['package']);
 
         $class = $apiInfo['definition'];
 
