@@ -59,7 +59,7 @@ config(['twitter.consumer_key' => env('TWITTER_CONSUMER_KEY')]);
 
     private function api($api)
     {
-        return Http::get('http://laravel-api.com/api/services/' . $api)
+        return Http::get('https://laravel-api.com/api/services/' . $api)
             ->json();
     }
 }
