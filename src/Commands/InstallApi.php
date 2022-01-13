@@ -70,13 +70,11 @@ config(['twitter.consumer_key' => env('TWITTER_CONSUMER_KEY')]);
         $manifestPath = app()->bootstrapPath('cache/laravel-api-manifest.php');
         if (File::exists($manifestPath)) {
             $apiManifest = include $manifestPath;
-
             $apiManifest[$apiInfo['name']] = $apiInfo;
-            File::put($manifestPath, '<?php return ' . var_export($apiManifest, true) . ';', true);
 
         } else {
             $apiManifest = [$apiInfo['name'] => $apiInfo];
-            File::put($manifestPath, '<?php return ' . var_export($apiManifest, true) . ';', true);
         }
+        File::put($manifestPath, '<?php return ' . var_export($apiManifest, true) . ';', true);
     }
 }
