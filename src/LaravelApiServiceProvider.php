@@ -3,6 +3,7 @@
 namespace LaravelApi\LaravelApi;
 
 use LaravelApi\LaravelApi\Commands\InstallApi;
+use LaravelApi\LaravelApi\Commands\LaravelApiDiscovery;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -17,6 +18,7 @@ class LaravelApiServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-api')
+            ->hasCommand(LaravelApiDiscovery::class)
             ->hasCommand(InstallApi::class);
     }
 }
