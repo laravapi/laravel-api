@@ -67,7 +67,7 @@ config(['twitter.consumer_key' => env('TWITTER_CONSUMER_KEY')]);
 
     protected function storeApiManifest(mixed $apiInfo): void
     {
-        $manifestPath = app()->bootstrapPath('cache/laravel-api-maifest.php');
+        $manifestPath = app()->bootstrapPath('cache/laravel-api-manifest.php');
         if (File::exists($manifestPath)) {
             $apiManifest = include $manifestPath;
 
