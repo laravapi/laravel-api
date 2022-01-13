@@ -1,5 +1,5 @@
 <?php
 
-use laravel-api\LaravelApi\Tests\TestCase;
+use LaravelApi\LaravelApi\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
