@@ -2,6 +2,7 @@
 
 namespace LaravelApi\LaravelApi\Commands;
 
+use Composer\Autoload\ClassLoader;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -36,9 +37,9 @@ class InstallApi extends Command
 
         $this->storeApiManifest($apiInfo);
 
-        $class = $apiInfo['definition'];
+        $definitionClass = $this->loadDefinitionClass($apiInfo['definition']);
 
-        foreach((new $class)->config() as $credentialKey => $config) {
+        foreach($definitionClass->config() as $credentialKey => $config) {
             $key = $this->ask('Enter credentials for ' . $credentialKey . ' (' . $config['description'] . ')');
             File::append('.env', PHP_EOL . $credentialKey . '=' . $key);
         }
@@ -52,9 +53,19 @@ class InstallApi extends Command
             ->json();
     }
 
-    protected function storeApiManifest(mixed $apiInfo): void
+    private function storeApiManifest(mixed $apiInfo): void
     {
         app(ManifestManager::class)
             ->add($apiInfo['name'], $apiInfo['definition']);
+    }
+
+    private function loadDefinitionClass($definitionClass)
+    {
+        if(!class_exists($definitionClass)) {
+            $classMap = require base_path('vendor/composer/autoload_classmap.php');
+            require $classMap[$definitionClass];
+        }
+
+        return new $definitionClass;
     }
 }
