@@ -9,10 +9,6 @@ class LaravelApi
     public function __construct(protected $api)
     {
         $this->apiClient = new ($this->getClientClassName());
-
-        foreach($this->apiClient->config() as $envKey => $configKey) {
-            config([$configKey => $envKey]);
-        }
     }
 
     public function __call($name, $arguments)
