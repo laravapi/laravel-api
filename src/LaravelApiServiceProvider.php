@@ -43,11 +43,13 @@ class LaravelApiServiceProvider extends PackageServiceProvider
             ->each(function($apiWrapperClass) {
                 $apiWrapper = (new $apiWrapperClass);
 
-                foreach($apiWrapper->config() as $envKey => $configKey) {
-                    config([$configKey => env($envKey)]);
+                foreach($apiWrapper->config() as $envKey => $config) {
+                    config([$config['config'] => env($envKey)]);
                 }
 
-                $apiWrapper->boot();
+                if(method_exists($apiWrapper, 'boot')) {
+                    $apiWrapper->boot();
+                }
             });
     }
 
