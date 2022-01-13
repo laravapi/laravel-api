@@ -18,8 +18,6 @@ class LaravelApi
 
     private function getClientClassName()
     {
-        $apiManifest = include app()->bootstrapPath('cache/laravel-api-manifest.php');
-
-        return $apiManifest[$this->api]['definition'];
+        return app(ManifestManager::class)->getManifest($this->api);
     }
 }

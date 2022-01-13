@@ -5,6 +5,7 @@ namespace LaravelApi\LaravelApi\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use LaravelApi\LaravelApi\ManifestManager;
 
 class LaravelApiDiscovery extends Command
 {
@@ -24,15 +25,14 @@ class LaravelApiDiscovery extends Command
 
     public function handle(): int
     {
-        $manifestPath = app()->bootstrapPath('cache/laravel-api-manifest.php');
         $apiInfo = $this->api();
 
         $apiManifest = collect($apiInfo)
-            ->filter(function (array $apiClientInfo) {
-            return class_exists($apiClientInfo['definition']);
-        })->mapWithKeys(fn($service) => [$service['name'] => $service]);
+            ->filter(fn (array $apiClientInfo) => class_exists($apiClientInfo['definition']))
+            ->mapWithKeys(fn($apiClientInfo) => [$apiClientInfo['name'] => $apiClientInfo['definition']])
+            ->toArray();
 
-        File::put($manifestPath, '<?php return ' . var_export($apiManifest->toArray(), true) . ';', true);
+        app(ManifestManager::class)->putManifest($apiManifest);
 
         return self::SUCCESS;
     }
