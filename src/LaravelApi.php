@@ -4,28 +4,26 @@ namespace LaravelApi\LaravelApi;
 
 class LaravelApi
 {
-    protected $definition;
+    protected $apiClient;
 
     public function __construct(protected $api)
     {
-        $this->definition = new ($this->getAvailableServices()[$this->api]);
+        $this->apiClient = new ($this->getClientClassName());
 
-        foreach($this->definition->config() as $envKey => $configKey) {
+        foreach($this->apiClient->config() as $envKey => $configKey) {
             config([$configKey => $envKey]);
         }
-
-        dd(config('services.twitter'));
     }
 
     public function __call($name, $arguments)
     {
-        return $this->definition->$name(...$arguments);
+        return $this->apiClient->$name(...$arguments);
     }
 
-    private function getAvailableServices()
+    private function getClientClassName()
     {
-        return [
-            'twitter' => 'Laravapi\Twitter\TwitterWrapper',
-        ];
+        $apiManifest = include app()->bootstrapPath('cache/laravel-api-manifest.php');
+
+        return $apiManifest[$this->api]['definition'];
     }
 }
