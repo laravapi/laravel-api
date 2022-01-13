@@ -30,34 +30,20 @@ class InstallApi extends Command
      */
     public function handle()
     {
-        // Get information for API
-        // Install composer package
-
         $apiInfo = $this->api($this->argument('api'));
-
-        $this->storeApiManifest($apiInfo);
 
         shell_exec('composer require ' . $apiInfo['package']);
 
+        $this->storeApiManifest($apiInfo);
+
         $class = $apiInfo['definition'];
 
-        /*
-        foreach((new $class)->neededCredentials() as $credentialKey => $description) {
-            $key = $this->ask('Enter credentials for ' . $credentialKey . ' (' . $description . ')');
+        foreach((new $class)->config() as $credentialKey => $config) {
+            $key = $this->ask('Enter credentials for ' . $credentialKey . ' (' . $config['description'] . ')');
             File::append('.env', PHP_EOL . $credentialKey . '=' . $key);
         }
-        */
 
-        /*
-        'twitter' => [
-        'consumer_key' => env('TWITTER_CONSUMER_KEY'),
-        'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
-        'access_token' => env('TWITTER_ACCESS_TOKEN'),
-        'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
-    ],
-config(['twitter.consumer_key' => env('TWITTER_CONSUMER_KEY')]);
-        */
-
+        return self::SUCCESS;
     }
 
     private function api($api)
