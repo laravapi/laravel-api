@@ -56,7 +56,7 @@ class InstallApi extends Command
     private function storeApiManifest(mixed $apiInfo): void
     {
         app(ManifestManager::class)
-            ->add($apiInfo['name'], $apiInfo['definition']);
+            ->add($apiInfo['key'], $apiInfo['definition']);
     }
 
     private function loadDefinitionClass($definitionClass)

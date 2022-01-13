@@ -29,7 +29,7 @@ class LaravelApiDiscovery extends Command
 
         $apiManifest = collect($apiInfo)
             ->filter(fn (array $apiClientInfo) => class_exists($apiClientInfo['definition']))
-            ->mapWithKeys(fn($apiClientInfo) => [$apiClientInfo['name'] => $apiClientInfo['definition']])
+            ->mapWithKeys(fn($apiClientInfo) => [$apiClientInfo['key'] => $apiClientInfo['definition']])
             ->toArray();
 
         app(ManifestManager::class)->putManifest($apiManifest);
