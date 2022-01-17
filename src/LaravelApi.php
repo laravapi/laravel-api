@@ -4,19 +4,29 @@ namespace LaravelApi\LaravelApi;
 
 class LaravelApi
 {
-    protected $apiClient;
+    protected $wrapper;
 
     public function __construct(protected $api)
     {
-        $this->apiClient = new ($this->getClientClassName());
+        $this->wrapper = $this->getWrapper();
     }
 
     public function __call($name, $arguments)
     {
-        return $this->apiClient->$name(...$arguments);
+        return $this->wrapper->$name(...$arguments);
     }
 
-    private function getClientClassName()
+    public function fake()
+    {
+        return new ($this->getWrapper()->faker);
+    }
+
+    private function getWrapper()
+    {
+        return new ($this->getWrapperClassName());
+    }
+
+    private function getWrapperClassName()
     {
         return app(ManifestManager::class)->getManifest($this->api);
     }
