@@ -25,7 +25,7 @@ class ManifestManager
         File::put($this->manifestPath, '<?php return ' . var_export($manifest, true) . ';', true);
     }
 
-    public function add($apiKey, $apiWrapperClassName): void
+    public function add(string $apiKey, string $apiWrapperClassName): void
     {
         $manifest = $this->getManifest();
         $manifest[$apiKey] = $apiWrapperClassName;
