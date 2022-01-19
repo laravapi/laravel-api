@@ -2,44 +2,43 @@
 
 namespace LaravelApi\LaravelApi\Commands;
 
-use Composer\Autoload\ClassLoader;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use LaravelApi\LaravelApi\ManifestManager;
 
-class InstallApi extends Command
+class InstallApiCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'api:install {api}';
+    protected $signature = 'api:install {apiKey}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Install a new API.';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
-        $apiInfo = $this->api($this->argument('api'));
+        $apiInfo = $this->api($this->argument('apiKey'));
 
         shell_exec('composer require ' . $apiInfo['package']);
 
         $this->storeApiManifest($apiInfo);
 
-        $definitionClass = $this->loadDefinitionClass($apiInfo['definition']);
+        $apiWrapper = $this->loadApiWrapper($apiInfo['definition']);
 
-        foreach($definitionClass->config() as $credentialKey => $config) {
+        foreach($apiWrapper->config() as $credentialKey => $config) {
             $key = $this->ask('Enter credentials for ' . $credentialKey . ' (' . $config['description'] . ')');
             File::append('.env', PHP_EOL . $credentialKey . '=' . $key);
         }
@@ -47,9 +46,9 @@ class InstallApi extends Command
         return self::SUCCESS;
     }
 
-    private function api($api)
+    private function api(string $apiKey): mixed
     {
-        return Http::get('https://laravel-api.com/api/services/' . $api)
+        return Http::get('https://laravel-api.com/api/services/' . $apiKey)
             ->json();
     }
 
@@ -59,13 +58,13 @@ class InstallApi extends Command
             ->add($apiInfo['key'], $apiInfo['definition']);
     }
 
-    private function loadDefinitionClass($definitionClass)
+    private function loadApiWrapper(string $apiWrapperClassName)
     {
-        if(!class_exists($definitionClass)) {
+         if(!class_exists($apiWrapperClassName)) {
             $classMap = require base_path('vendor/composer/autoload_classmap.php');
-            require $classMap[$definitionClass];
+            require $classMap[$apiWrapperClassName];
         }
 
-        return new $definitionClass;
+        return new $apiWrapperClassName;
     }
 }

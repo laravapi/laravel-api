@@ -1,8 +1,8 @@
 <?php
 
 if (! function_exists('api')) {
-    function api($api)
+    function api(string $apiKey)
     {
-        return new LaravelApi\LaravelApi\LaravelApi($api);
+        return new LaravelApi\LaravelApi\LaravelApi($apiKey);
     }
 }
