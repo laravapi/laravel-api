@@ -20,15 +20,15 @@ class ManifestManager
         return $api ? Arr::get($manifest, $api) : $manifest;
     }
 
-    public function putManifest(array $manifest)
+    public function putManifest(array $manifest): void
     {
         File::put($this->manifestPath, '<?php return ' . var_export($manifest, true) . ';', true);
     }
 
-    public function add($api, $definition)
+    public function add(string $apiKey, string $apiWrapperClassName): void
     {
         $manifest = $this->getManifest();
-        $manifest[$api] = $definition;
+        $manifest[$apiKey] = $apiWrapperClassName;
         $this->putManifest($manifest);
     }
 }
