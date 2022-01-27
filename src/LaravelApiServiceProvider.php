@@ -3,8 +3,11 @@
 namespace LaravelApi\LaravelApi;
 
 use Illuminate\Support\Facades\File;
+use LaravelApi\LaravelApi\Commands\Help;
 use LaravelApi\LaravelApi\Commands\InstallApiCommand;
 use LaravelApi\LaravelApi\Commands\LaravelApiDiscovery;
+use LaravelApi\LaravelApi\Commands\ListApis;
+use LaravelApi\LaravelApi\Commands\SetEnvKeys;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -12,15 +15,15 @@ class LaravelApiServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('laravel-api')
-            ->hasCommand(LaravelApiDiscovery::class)
-            ->hasCommand(InstallApiCommand::class);
+            ->hasCommands([
+                InstallApiCommand::class,
+                LaravelApiDiscovery::class,
+                SetEnvKeys::class,
+                Help::class,
+                ListApis::class,
+            ]);
 
         $this->registerManifestManager();
         $this->bootApis();
