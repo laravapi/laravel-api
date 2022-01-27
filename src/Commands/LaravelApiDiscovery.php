@@ -2,25 +2,14 @@
 
 namespace LaravelApi\LaravelApi\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use LaravelApi\LaravelApi\ManifestManager;
 
-class LaravelApiDiscovery extends Command
+class LaravelApiDiscovery extends GeneralCommand
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'api:discovery';
+    protected $signature = 'api:discover';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Discover given api clients and write to manifest.';
+    protected $description = 'Discover installed API clients.';
 
     public function handle(): int
     {
@@ -34,11 +23,5 @@ class LaravelApiDiscovery extends Command
         app(ManifestManager::class)->putManifest($apiManifest);
 
         return self::SUCCESS;
-    }
-
-    private function api(string $api = '')
-    {
-        return Http::get('https://laravel-api.com/api/services/' . $api)
-            ->json();
     }
 }
