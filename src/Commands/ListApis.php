@@ -17,13 +17,12 @@ class ListApis extends GeneralCommand
             ->map(fn($api) => [
                 'name' => $api['name'],
                 'package' => $api['apiPackage'],
-                'description' => $api['description'],
                 'command' => 'php artisan api:install ' . $api['key'],
                 'more-info' => 'https://laravel-api.com/apis?api=' . $api['key'],
             ]);
 
         $this->table(
-            ['API', 'Package', 'Description', 'Installation', 'More Information'],
+            ['API', 'Package', 'Installation', 'More Information'],
             $apis
         );
 

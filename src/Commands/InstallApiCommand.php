@@ -13,19 +13,22 @@ class InstallApiCommand extends ApiCommand
 
     protected function handleCommand(): int
     {
-        shell_exec('composer require ' . $this->apiInfo['package']);
-        $this->storeApiManifest($this->apiInfo);
+        $this->warn('Installing ' . $this->apiInfo['wrapperPackage'] . ' via composer...');
+        shell_exec('composer require ' . $this->apiInfo['wrapperPackage'] . ' --quiet');
+        $this->info($this->apiInfo['wrapperPackage'] . ' installed successfully.');
+        $this->storeApiManifest();
+        $this->loadApiWrapper($this->apiInfo['wrapperClass']);
         $this->handleEnvKeys();
-        $this->info('API ' . $this->apiKey . ' was installed successfully!' . PHP_EOL);
+        $this->info('API "' . $this->apiInfo['name'] . '" was installed successfully!' . PHP_EOL);
         $this->showHelp();
 
         return self::SUCCESS;
     }
 
-    private function storeApiManifest(mixed $apiInfo): void
+    private function storeApiManifest(): void
     {
         app(ManifestManager::class)
-            ->add($apiInfo['key'], $apiInfo['definition']);
+            ->add($this->apiInfo['key'], $this->apiInfo['wrapperClass']);
     }
 
 

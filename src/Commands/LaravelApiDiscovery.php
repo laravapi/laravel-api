@@ -2,7 +2,6 @@
 
 namespace LaravelApi\LaravelApi\Commands;
 
-use Illuminate\Support\Facades\Http;
 use LaravelApi\LaravelApi\ManifestManager;
 
 class LaravelApiDiscovery extends GeneralCommand
@@ -16,8 +15,8 @@ class LaravelApiDiscovery extends GeneralCommand
         $apiInfo = $this->api();
 
         $apiManifest = collect($apiInfo)
-            ->filter(fn (array $apiClientInfo) => class_exists($apiClientInfo['definition']))
-            ->mapWithKeys(fn($apiClientInfo) => [$apiClientInfo['key'] => $apiClientInfo['definition']])
+            ->filter(fn (array $apiClientInfo) => class_exists($apiClientInfo['wrapperClass']))
+            ->mapWithKeys(fn($apiClientInfo) => [$apiClientInfo['key'] => $apiClientInfo['wrapperClass']])
             ->toArray();
 
         app(ManifestManager::class)->putManifest($apiManifest);

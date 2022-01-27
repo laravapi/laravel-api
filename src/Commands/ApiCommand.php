@@ -40,7 +40,7 @@ abstract class ApiCommand extends GeneralCommand
             return self::INVALID;
         }
 
-        $this->isInstalled = $this->isInstalled($this->apiInfo['definition']);
+        $this->isInstalled = $this->isInstalled($this->apiInfo['wrapperClass']);
 
         if ($this->apiMustBeInstalled && !$this->isInstalled) {
             $this->warn('The API "' . $this->argument('apiKey') . '" must be installed to run this command.' . PHP_EOL . 'Please run "php artisan api:install ' . $this->argument('apiKey') . '" to install this API.');
@@ -48,14 +48,14 @@ abstract class ApiCommand extends GeneralCommand
         }
 
         if ($this->isInstalled) {
-            $this->apiWrapper = $this->loadApiWrapper($this->apiInfo['definition']);
+            $this->apiWrapper = $this->loadApiWrapper($this->apiInfo['wrapperClass']);
             $this->neededEnvKeys = array_keys($this->apiWrapper->config());
         }
 
         return $this->handleCommand();
     }
 
-    private function loadApiWrapper(string $apiWrapperClassName)
+    protected function loadApiWrapper(string $apiWrapperClassName)
     {
         if (!class_exists($apiWrapperClassName)) {
             $classMap = require base_path('vendor/composer/autoload_classmap.php');
