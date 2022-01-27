@@ -49,7 +49,6 @@ abstract class ApiCommand extends GeneralCommand
 
         if ($this->isInstalled) {
             $this->apiWrapper = $this->loadApiWrapper($this->apiInfo['wrapperClass']);
-            $this->neededEnvKeys = array_keys($this->apiWrapper->config());
         }
 
         return $this->handleCommand();
@@ -61,6 +60,8 @@ abstract class ApiCommand extends GeneralCommand
             $classMap = require base_path('vendor/composer/autoload_classmap.php');
             require $classMap[$apiWrapperClassName];
         }
+
+        $this->neededEnvKeys = array_keys($this->apiWrapper->config());
 
         return new $apiWrapperClassName;
     }
