@@ -61,7 +61,7 @@ abstract class ApiCommand extends GeneralCommand
             require $classMap[$apiWrapperClassName];
         }
 
-        $apiWrapper = new new $apiWrapperClassName;
+        $apiWrapper = new $apiWrapperClassName;
 
         $this->neededEnvKeys = array_keys($apiWrapper->config());
 
