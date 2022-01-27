@@ -12,14 +12,17 @@ class ListApis extends GeneralCommand
 
     public function handle(): int
     {
+        $installedApis = array_keys(app(ManifestManager::class)->getManifest());
+
         $apis = collect($this->api())
-            ->sortBy('name')
+            ->sortBy(fn($api) => (in_array($api['key'], $installedApis) ? 0 : 1) . $api['name'])
             ->map(fn($api) => [
-                'name' => $api['name'],
+                'name' => (in_array($api['key'], $installedApis) ? '✅ ' : '  ') . $api['name'],
                 'package' => $api['apiPackage'],
                 'command' => 'php artisan api:install ' . $api['key'],
                 'more-info' => 'https://laravel-api.com/apis?api=' . $api['key'],
-            ]);
+            ])
+            ;
 
         $this->table(
             ['API', 'Package', 'Installation', 'More Information'],
