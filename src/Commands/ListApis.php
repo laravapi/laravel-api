@@ -17,12 +17,11 @@ class ListApis extends GeneralCommand
         $apis = collect($this->api())
             ->sortBy(fn($api) => (in_array($api['key'], $installedApis) ? 0 : 1) . $api['name'])
             ->map(fn($api) => [
-                'name' => $api['name'] . (in_array($api['key'], $installedApis) ? ' ✅' : ''),
+                'name' => (in_array($api['key'], $installedApis) ? '✓ ' : '  ') . $api['name'],
                 'package' => $api['apiPackage'],
                 'command' => 'php artisan api:install ' . $api['key'],
                 'more-info' => 'https://laravel-api.com/apis?api=' . $api['key'],
-            ])
-            ;
+            ]);
 
         $this->table(
             ['API', 'Package', 'Installation', 'More Information'],
