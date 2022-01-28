@@ -2,6 +2,7 @@
 
 namespace LaravelApi\LaravelApi\Commands;
 
+use Exception;
 use LaravelApi\LaravelApi\ManifestManager;
 
 class InstallApiCommand extends ApiCommand
@@ -15,9 +16,18 @@ class InstallApiCommand extends ApiCommand
     {
         $this->warn('Installing ' . $this->apiInfo['wrapperPackage'] . ' via composer...');
         shell_exec('composer require ' . $this->apiInfo['wrapperPackage'] . ' --quiet');
+
+        try {
+            $this->loadApiWrapper($this->apiInfo['wrapperClass']);
+        }
+        catch (Exception $exception) {
+            $this->error('Couldn\'t install ' . $this->apiInfo['wrapperPackage'] . ' via composer.');
+            $this->warn('Please try again or install the package manually with "composer require ' . $this->apiInfo['wrapperPackage'] .'".');
+            return self::FAILURE;
+        }
+
         $this->info($this->apiInfo['wrapperPackage'] . ' installed successfully.');
         $this->storeApiManifest();
-        $this->loadApiWrapper($this->apiInfo['wrapperClass']);
         $this->handleEnvKeys();
         $this->info('API "' . $this->apiInfo['name'] . '" was installed successfully!' . PHP_EOL);
         $this->showHelp();
