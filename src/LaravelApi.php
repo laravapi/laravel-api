@@ -2,6 +2,9 @@
 
 namespace LaravelApi\LaravelApi;
 
+use Exception;
+use LaravelApi\LaravelApi\Exceptions\LaravelApiException;
+
 class LaravelApi
 {
     protected $apiWrapper;
@@ -18,7 +21,23 @@ class LaravelApi
 
     public function fake()
     {
-        return new ($this->getApiWrapper()->faker);
+        return new ($this->apiWrapper->faker);
+    }
+
+    public function check()
+    {
+        if(!method_exists($this->apiWrapper, 'check')) {
+            throw new LaravelApiException('The "' . $this->apiKey . '" API wrapper misses the necessary check() method.');
+        }
+
+        try {
+            $checkResult = (bool) $this->apiWrapper->check();
+        }
+        catch(Exception $exception) {
+            $checkResult = false;
+        }
+
+        return $checkResult;
     }
 
     private function getApiWrapper()

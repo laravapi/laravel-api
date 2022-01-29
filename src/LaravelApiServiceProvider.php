@@ -3,6 +3,7 @@
 namespace LaravelApi\LaravelApi;
 
 use Illuminate\Support\ServiceProvider;
+use LaravelApi\LaravelApi\Commands\CheckApi;
 use LaravelApi\LaravelApi\Commands\Help;
 use LaravelApi\LaravelApi\Commands\InstallApiCommand;
 use LaravelApi\LaravelApi\Commands\LaravelApiDiscovery;
@@ -20,6 +21,7 @@ class LaravelApiServiceProvider extends ServiceProvider
                 SetEnvKeys::class,
                 Help::class,
                 ListApis::class,
+                CheckApi::class,
             ]);
         }
 

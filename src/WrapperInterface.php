@@ -7,4 +7,6 @@ interface WrapperInterface
     public function boot(): void;
 
     public function config(): array;
+
+    public function check(): bool;
 }
