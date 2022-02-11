@@ -2,7 +2,7 @@
 
 namespace LaravelApi\LaravelApi\Commands;
 
-class CheckApi extends ApiCommand
+class CheckApiCommand extends ApiCommand
 {
     protected $command = 'check';
     protected $description = 'Check if the API keys in .env work.';

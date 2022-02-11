@@ -4,7 +4,7 @@ namespace LaravelApi\LaravelApi\Commands;
 
 use LaravelApi\LaravelApi\ManifestManager;
 
-class LaravelApiDiscovery extends GeneralCommand
+class LaravelApiDiscoveryCommand extends GeneralCommand
 {
     protected $signature = 'api:discover';
 

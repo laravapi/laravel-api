@@ -45,12 +45,12 @@ class InstallApiCommand extends ApiCommand
     private function handleEnvKeys()
     {
         if(count($this->neededEnvKeys) > 0 && $this->confirm('Do you want to set your .env keys now?', true)) {
-            $this->call(SetEnvKeys::class, ['apiKey' => $this->apiKey]);
+            $this->call(SetEnvKeysCommand::class, ['apiKey' => $this->apiKey]);
         }
     }
 
     private function showHelp()
     {
-        $this->call(Help::class, ['apiKey' => $this->apiKey]);
+        $this->call(HelpCommand::class, ['apiKey' => $this->apiKey]);
     }
 }

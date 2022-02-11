@@ -5,7 +5,7 @@ namespace LaravelApi\LaravelApi\Commands;
 use Illuminate\Support\Facades\Http;
 use LaravelApi\LaravelApi\ManifestManager;
 
-class ListApis extends GeneralCommand
+class ListApisCommand extends GeneralCommand
 {
     protected $signature = 'api:list';
     protected $description = 'List available APIS';

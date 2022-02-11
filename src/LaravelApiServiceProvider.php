@@ -3,12 +3,12 @@
 namespace LaravelApi\LaravelApi;
 
 use Illuminate\Support\ServiceProvider;
-use LaravelApi\LaravelApi\Commands\CheckApi;
-use LaravelApi\LaravelApi\Commands\Help;
+use LaravelApi\LaravelApi\Commands\CheckApiCommand;
+use LaravelApi\LaravelApi\Commands\HelpCommand;
 use LaravelApi\LaravelApi\Commands\InstallApiCommand;
-use LaravelApi\LaravelApi\Commands\LaravelApiDiscovery;
-use LaravelApi\LaravelApi\Commands\ListApis;
-use LaravelApi\LaravelApi\Commands\SetEnvKeys;
+use LaravelApi\LaravelApi\Commands\LaravelApiDiscoveryCommand;
+use LaravelApi\LaravelApi\Commands\ListApisCommand;
+use LaravelApi\LaravelApi\Commands\SetEnvKeysCommand;
 
 class LaravelApiServiceProvider extends ServiceProvider
 {
@@ -17,11 +17,11 @@ class LaravelApiServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallApiCommand::class,
-                LaravelApiDiscovery::class,
-                SetEnvKeys::class,
-                Help::class,
-                ListApis::class,
-                CheckApi::class,
+                LaravelApiDiscoveryCommand::class,
+                SetEnvKeysCommand::class,
+                HelpCommand::class,
+                ListApisCommand::class,
+                CheckApiCommand::class,
             ]);
         }
 
