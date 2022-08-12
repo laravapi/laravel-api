@@ -12,7 +12,7 @@ The easiest way to embed APIs in a Laravel project.
 You can install the package via composer:
 
 ```bash
-composer require christophrumpel/laravel-api
+composer require laravel-api/laravel-api
 ```
 
 ## Usage
